@@ -8,7 +8,7 @@ module.exports = {
     mainFiles: ['index']
   },
   externals: {
-    lodash: 'lodash' //引入库的名字 一定要叫lodash   import lodash from "lodash"
+    // lodash: 'lodash' //引入库的名字 一定要叫lodash   import lodash from "lodash"
   }, // ['lodash']如果遇到lodash这个库 就不要打包（因为可能别人用你这个库的时候 别人也引用了lodash 会造成浪费） 所以在你利用我这个库的时候 要引入lodash 这个库
   module: {
     rules: [
@@ -35,4 +35,7 @@ module.exports = {
   }
 }
 
+// 个人
 // babel 记得装transform-runtime 专门处理函数库的
+// 不需要代码分割 因为输出的是一个JS文件。
+// 可以利用externals 解决 第三方库引用的问题
