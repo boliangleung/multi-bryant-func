@@ -1,10 +1,10 @@
 {
   "name": "multi-bryant-func",
-  "version": "1.0.0",
+  "version": "1.9.0",
   "description": "",
   "main": "./dist/multi_func.js",
   "scripts": {
-    "test": "webpack --config ./build/webpack.dev.js",
+    "test": "webpack-dev-server --config ./build/webpack.dev.js",
     "build": "webpack --config ./build/webpack.prod.js"
   },
   "keywords": [
@@ -13,7 +13,13 @@
     "function",
     "filter"
   ],
-  "author": "web_bryant",
+  "files": [
+    "src",
+    "dist/*.js",
+    "*.json",
+    ".babelIrc"
+  ],
+  "author": "web_boliang",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.7.4",

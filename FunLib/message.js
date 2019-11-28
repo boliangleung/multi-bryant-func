@@ -61,7 +61,4 @@ let confirm = function(text, callback) {
   )
 }
 
-export default {
-  infor,
-  confirm
-}
+export { infor, confirm }
