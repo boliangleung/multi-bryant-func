@@ -41,5 +41,9 @@
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "@babel/runtime": "^7.7.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boliangleung/multi-bryant-func"
   }
 }
