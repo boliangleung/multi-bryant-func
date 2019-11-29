@@ -1,5 +1,5 @@
 /**
- * @title  检查IP地址
+ * @title  基础的校验函数
  * @params value:传入的值  type: 检查的类型
  * @retrun type Promise(可进行链式调用) value:{0:'不正确','1':'正确','2':'value为空','3':'类型为空'}
  * @desc   type的枚举 IP: ip地址  IdNo：身份证号码  eMail:又想验证 url：'合法url地址' ,isUpper:'大小写',isChinese:''是否为中文

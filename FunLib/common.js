@@ -1,3 +1,7 @@
+/**
+ * @title 数组扁平化
+ * @params {Array}
+ */
 const arrFloat = arr => {
   return arr.flat(Infinity)
 }
@@ -15,7 +19,7 @@ const getQueryString = name => {
 
 /**
  *  @title 简单防xss攻击
- *  @param string
+ *  @param {String} str
  *  @desc 针对上传到服务器的一些数据
  */
 const preventXSS = str => {
@@ -48,14 +52,14 @@ const js_getDPI = () => {
 
 /**
  * @title 结果数据的提示
- * @param baseParams 提交的数据
- * @param checkParam 提示的key -value的对象
+ * @param {Object} baseParams 提交的数据
+ * @param {Object} checkParam 提示的key -value的对象
  * @desc 在我们实际开发过程中，如果我们数据不同字段为空时对于着不同的提示 那么我们得写十几个if elseif语句。下面是解决方案
  * @useage  tipsArr={imgUrl:'图片路径不可为空',name:'用户姓名不能为空'} checkEmpty(params,tipsArr).then(res=>if(res.errorText){modal(res.errorText)})
  */
 
 const checkEmpty = async (baseParams, checkParam) => {
-  for (const key in baseParams) {
+  for (const key in checkParam) {
     if (baseParams[key].tirm() === '') {
       return {
         errorText: checkParam[key] || `${key} can no be empty,please check!`
@@ -66,23 +70,40 @@ const checkEmpty = async (baseParams, checkParam) => {
 }
 
 /**
- * @title 金额转化成大写
- * @param number
- * @tips 当你得到了大写字母 你要加间距。你可以通过转化成数组再去for循环样式 或者用正则 moneyUpper(12.05).split(//)
+ * @description 检测密码强度
+ * str 密码 一共有4级
  */
-const moneyUpper = num => {
-  const chinaNum = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
-  const chinaUnit = ['分', '角', '元', '拾', '佰', '仟', '万', '拾', '佰', '仟']
-  const resultList = []
-  let priceStr = num.toFixed(2).toString()
-  let itemStr = ''
-  for (var i = 0; i < priceStr.length; i++) {
-    if (priceStr[i] != '.') {
-      resultList.unshift(chinaNum[priceStr[i]])
+const checkPwdLevel = str => {
+  let nowLv = 0
+  if (str.length < 6) {
+    return nowLv
+  }
+  //把规则整理成数组，再进行循环判断
+  let rules = [/[0-9]/, /[a-z]/, /[A-Z]/, /[\.|-|_]/]
+  for (let i = 0; i < rules.length; i++) {
+    if (rules[i].test(str)) {
+      nowLv++
     }
   }
-  resultList.forEach(function(item, index) {
-    itemStr = item + chinaUnit[index] + itemStr
-  })
-  return itemStr
+  return nowLv
+}
+
+/**
+ *  @title 数组去重
+ *  @param {Array} arr
+ */
+
+const arrDelRepeat = arr => {
+  Array.from(new Set(arr))
+  return [...new Set([1, 2, 3, 3, 4, 4])]
+}
+
+export {
+  arrFloat,
+  getQueryString,
+  preventXSS,
+  js_getDPI,
+  checkEmpty,
+  checkPwdLevel,
+  arrDelRepeat
 }

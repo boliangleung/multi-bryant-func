@@ -1,6 +1,10 @@
 const path = require('path')
 const FS = require('fs')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const isProd = process.env.NODE_ENV === 'production' ? true : false
+const entry = {}
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+// const isInteractive = process.stdout.isTTY //判断是否在终端
 //合并文件夹的JS 全部抛出
 const mergeFiles = function(relativeFloader, exportFilePath) {
   const readFiles = []
@@ -15,9 +19,8 @@ const mergeFiles = function(relativeFloader, exportFilePath) {
   for (let i = 0; i < readFiles.length; i++) {
     newFileData += FS.readFileSync(readFiles[i])
     mergeFileProgress++
-    console.log('读取第' + mergeFileProgress + '个文件。')
+    console.log('打包前读取第' + mergeFileProgress + '个文件。')
   }
-
   FS.writeFile(exportFilePath, newFileData, err => {
     if (null != err) {
       throw err
@@ -26,14 +29,25 @@ const mergeFiles = function(relativeFloader, exportFilePath) {
     }
   })
 }
-// 把合并的文件存放在dist文件。 等打包完后可自动删除
-mergeFiles('../FunLib', './dist/allExport.js')
-
+const getDevEntry = function(relativeFloader) {
+  const files = FS.readdirSync(path.resolve(__dirname, relativeFloader))
+  files.forEach(file => {
+    if (/.*\.js/.test(file)) {
+      entry[file] = path.resolve(__dirname, relativeFloader, file)
+    }
+  })
+}
+//因为生产环境是合成文件再打包的，如果测试环境也合成 不但效率慢 而且无法启用热更新功能 因为entry是合成文件，无法监听JS变化
+if (isProd) {
+  // 把合并的文件存放在dist文件。 等打包完后可自动删除
+  mergeFiles('../FunLib', './dist/allExport.js')
+  entry['multi_func'] = './dist/allExport.js'
+} else {
+  getDevEntry('../FunLib')
+}
 module.exports = {
   bail: true, //打包错误的时候 停止打包
-  entry: {
-    multi_func: './dist/allExport.js'
-  },
+  entry,
   resolve: {
     mainFiles: ['index']
   },
@@ -56,11 +70,9 @@ module.exports = {
   optimization: {
     usedExports: true
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin(), new FriendlyErrorsWebpackPlugin()],
+  performance: false,
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].js',
-    libraryTarget: 'umd',
-    library: 'Brt' // //增加Brt这个全局变量   // 如果用this   则可以 this.libraray就可以调用这个库了
+    path: path.resolve(__dirname, '../dist')
   }
 }
