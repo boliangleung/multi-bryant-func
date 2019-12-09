@@ -117,8 +117,8 @@ const RandomNum = (min, max) =>
    DataType([], 'array') // true
    DataType({}, 'array') // false
  */
-function DataType(tgt, type) {
-  const type = Object.prototype.toString
+const DataType = (tgt, dataType) => {
+  let type = Object.prototype.toString
     .call(tgt)
     .replace(/\[object (\w+)\]/, '$1')
     .toLowerCase()
