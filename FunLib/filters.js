@@ -83,4 +83,133 @@ const moneyUpper = num => {
   })
   return itemStr
 }
-export { dateFormat, moneyUpper }
+
+/**
+ * 把Number四舍五入为指定小数位数的数字字符串（解决原toFixed四舍五入问题）
+ * @param {number} [len=0] 保留小数位数
+ * @param {boolean} [round=true] 是否四舍五入（默认进行四舍五入）
+ * @param {boolean} [padding=true] 有效数字不足预设小数位数时是否后补0（默认后补）如：_toFixed(1.1,3,true,true) = "1.100"  ;   _toFixed(1.1,3,true,false) = "1.1"
+ * @returns {string}
+ * @example _toFixed(1.335,2);
+ */
+const _toFixed = (num, len = 2, round = true, padding = true) => {
+  num = Number(num)
+  if (len < 0) {
+    throw new RangeError('digits argument must be between 0 and 100')
+  }
+  let numStr = String(num), //数字转字符串
+    pointIndex = numStr.indexOf('.'), //小数点下标
+    preNumIndex = pointIndex + len + 1 //保留位后一位数字下标
+  if (numStr.includes('e') || pointIndex === -1) {
+    //遇到科学表示法或整数，直接返回原生toFixed处理结果
+    return num.toFixed(len)
+  }
+  let addZeroCount = len - (numStr.length - pointIndex - 1) //需补0的个数
+  if (addZeroCount > 0) {
+    numStr += '0'.repeat(addZeroCount) //小数位不足后补0
+  }
+  let numCut = Math.abs(numStr.substring(0, preNumIndex)) //截取保留位（含）前的所有字符
+  let res =
+    (num < 0 ? '-' : '') +
+    (round && numStr[preNumIndex] >= 5
+      ? numCut + 1 / Math.pow(10, len)
+      : numCut
+    ).toFixed(len) //判断预期小数位后一位是否大于等于5，是则进位
+  return padding ? res : String(Number(res))
+}
+
+/**
+ * @title 脱敏身份证号，前四后三，中间有多少位就有多少个*
+ * @param {String} idNum
+ * @returns {String}
+ */
+const idNumberFormat = idNum => {
+  if (typeof idNum !== 'string') {
+    return ''
+  }
+
+  if (idNum.length < 7) {
+    return idNum
+  }
+
+  let star = '*'.repeat(idNum.length - 7)
+  let value = idNum.slice(0, 4) + star + idNum.slice(idNum.length - 3)
+  return value
+}
+
+/**
+ * @title 脱敏手机号码 前三后四 中间四个
+ * @param {String} idNum
+ * @returns {String}
+ */
+const phoneFormat = phone => {
+  if (typeof phone !== 'string') {
+    return ''
+  }
+
+  if (phone.length < 7) {
+    return phone
+  }
+
+  let reg = /^(\d{3})[\s\S]+(\d{4})$/
+  let value = phone.toString().replace(reg, '$1****$2')
+  return value
+}
+/**
+ * @title 金钱过滤器
+ * 参数说明：
+ * @param {Number|String} number：要格式化的数字
+ * @param {Number|String} decimals：保留几位小数 默认值 2位小数
+ * @param {String} dec_point：小数点符号    默认值 '.'
+ * @param {String} thousands_sep：千分位符号  默认值  ','
+ * @param {String} roundtag:舍入参数，默认 "ceil" 向上取,"floor"向下取,"round" 四舍五入
+ * @example moneyFormat(12345.5)  // 参数自己添加
+ * */
+const moneyFormat = (
+  number,
+  decimals = 2,
+  dec_point = '.',
+  thousands_sep = ',',
+  roundtag
+) => {
+  number = (number + '').replace(/[^0-9+-Ee.]/g, '')
+  roundtag = roundtag || 'ceil' //"ceil","floor","round"
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = typeof thousands_sep === 'undefined' ? ',' : thousands_sep,
+    dec = typeof dec_point === 'undefined' ? '.' : dec_point,
+    s = '',
+    toFixedFix = function(n, prec) {
+      var k = Math.pow(10, prec)
+      console.log()
+
+      return (
+        '' +
+        parseFloat(
+          Math[roundtag](parseFloat((n * k).toFixed(prec * 2))).toFixed(
+            prec * 2
+          )
+        ) /
+          k
+      )
+    }
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.')
+  var re = /(-?\d+)(\d{3})/
+  while (re.test(s[0])) {
+    s[0] = s[0].replace(re, '$1' + sep + '$2')
+  }
+
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || ''
+    s[1] += new Array(prec - s[1].length + 1).join('0')
+  }
+  return s.join(dec)
+}
+export {
+  dateFormat,
+  moneyUpper,
+  _toFixed,
+  idNumberFormat,
+  phoneFormat,
+  moneyFormat
+}

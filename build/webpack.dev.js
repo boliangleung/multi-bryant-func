@@ -13,10 +13,10 @@ const devConfig = {
       //避免了一些系统的CPU过载。
       ignored: /node_modules/
     },
-    compress: true,
+    compress: true, //启动gzip压缩
     port: 9000,
     open: true,
-    hot: true,
+    hot: true,  //热加载
     quiet: true // 不显示webpack的打包信息在测试环境
   },
   devtool: 'cheap-module-eval-source-map',

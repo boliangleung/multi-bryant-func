@@ -108,6 +108,72 @@ import * as filters from "multi-bryant-func/FunLib/filters"
  */
 ```
 
+- RandomNum
+
+```
+/**
+ * @title 生成范围随机数
+ * @param {Number} min 最小
+ * @param {Number} max 最小
+ */
+```
+
+- DataType
+
+```
+/**
+ * @title 判断数据类型
+ * @param {Number} tgt 数据
+ * @param {String} type 类型
+ * DataType('young') // "string"
+   DataType(20190214) // "number"
+   DataType(true) // "boolean"
+   DataType([], 'array') // true
+   DataType({}, 'array') // false
+ */
+```
+
+- isEmptyObject
+
+```
+/**
+ * @title 是否为空对象
+ * @param {Object} obj
+ * @return {Boolean}
+ */
+```
+
+- confusedArr
+
+```
+/**
+ * @title 混淆数组
+ * @param {Array} arr
+ * @returns {Array}
+ */
+```
+
+- getAge
+
+```
+/**
+ * 计算年龄
+ * @param {String} birthString  传入Date类型的字符串格式 '1996-04-14' '1996/04/14' 或者时间戳也可以
+ * @param {Date} now
+ * @returns {int}
+ * getAge('1996-04-14')
+ */
+```
+
+- IEVersion
+
+```
+/**
+ * @title 获取IE版本
+ * @return number IE的版本 -1 非IE  'edge' edge浏览器 number IE对应的版本
+ */
+```
+
 #### filters 模块
 
 - dateFormat
@@ -146,6 +212,41 @@ import * as filters from "multi-bryant-func/FunLib/filters"
  */
 ```
 
+- idNumberFormat
+
+```
+/**
+ * @title 脱敏身份证号，前四后三，中间有多少位就有多少个*
+ * @param {String} idNum
+ * @returns {String}
+ */
+```
+
+- phoneFormat
+
+```
+/**
+ * @title 脱敏手机号码 前三后四 中间四个
+ * @param {String} idNum
+ * @returns {String}
+ */
+```
+
+- moneyFormat
+
+```
+/**
+ * @title 金钱过滤器
+ * 参数说明：
+ * @param {Number|String} number：要格式化的数字
+ * @param {Number|String} decimals：保留几位小数 默认值 2位小数
+ * @param {String} dec_point：小数点符号    默认值 '.'
+ * @param {String} thousands_sep：千分位符号  默认值  ','
+ * @param {String} roundtag:舍入参数，默认 "ceil" 向上取,"floor"向下取,"round" 四舍五入
+ * @example moneyFormat(12345.5)  // 参数自己添加
+ * */
+```
+
 #### message 模块
 
 - infor
@@ -175,10 +276,20 @@ confirm('是否好好学习',fn())
  */
 ```
 
+#### When multiple function modules are added later, `README.md` documents will be optimized
+
+#### If you want to encounter a webpkg (normal project online multi page application, etc.) that will not be configured and function function usage, you can have a drink consultation. contact:786981510@qq.com
+
+#### Because the recent projects are also relatively tight, this is something that I usually summarize in the evening. It may not be very good, but I will add the remaining functions in the following days.
+
+#### If necessary, I will share my knowledge of webback and react (if necessary) with you later in nuggets.
+
+#### My major is Vue. I hope to learn from you and improve with you
+
 #### 如果想要遇到不会配置的 webpck（正常项目上线 多页面应用等）和函数功能用法 欢饮咨询。 contact:786981510@qq.com
 
 #### 因为最近的项目也比较紧，这是平时晚上抽空总结的东西，可能写的也不是太好，不过我在后续的日子里，会把剩下的函数补充上来。
 
-#### 如果有必要，我在后期将会在掘金分享我的 webpack 和 React 知识(有必要的话)给大家。 掘金号 web_Bryant
+#### 如果有必要，我在后期将会在掘金分享我的 webpack 和 React 知识(有必要的话)给大家。
 
 #### 本人主攻 Vue 希望和大家多多互相学习互相进步
